@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tickets-depl
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tickets
+  template: ## configuration about of pod
+    metadata:
+      labels:
+        app: tickets
+    spec:
+      containers:
+      - name: tickets
+        image: carmahe00/tickets
+        env:
+          - name: JWT_KEY # value to access inside app
+            valueFrom:
+              secretKeyRef:
+                key: JWT_KEY
+                name: jwt-secret
+          - name: MONGO_URI # value to access inside app
+            value: 'mongodb://tickets-mongo-srv:27017/tickets'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tickets-srv
+spec:
+  selector:
+    app: tickets
+  ports:
+  - port: 3000
+    targetPort: 3000
+    name: tickets
+    protocol: TCP

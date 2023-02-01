@@ -1,0 +1,67 @@
+apiVersion: skaffold/v2alpha3
+kind: config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: false
+    concurrency: 1
+    useDockerCLI: false
+  artifacts:
+    - image: carmahe00/client
+      context: client
+      docker:
+        noCache: true
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: carmahe00/comments
+      context: comments
+      docker:
+        noCache: true
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: carmahe00/posts
+      context: posts
+      docker:
+        noCache: true
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: carmahe00/event-bus
+      context: event-bus
+      docker:
+        noCache: true
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: carmahe00/moderation
+      context: moderation
+      docker:
+        noCache: true
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: carmahe00/query
+      context: query
+      docker:
+        noCache: true
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+  
