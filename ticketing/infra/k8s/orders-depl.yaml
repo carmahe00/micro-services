@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders-depl
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orders
+  template: ## configuration about of pod
+    metadata:
+      labels:
+        app: orders
+    spec:
+      containers:
+      - name: orders
+        image: carmahe00/orders
+        env:
+          - name: NATS_CLIENT_ID
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: NATS_URL
+            value: 'http://nats-srv:4222'
+          - name: NATS_CLUSTER_ID
+            value: 'ticketing'
+          - name: JWT_KEY # value to access inside app
+            valueFrom:
+              secretKeyRef:
+                key: JWT_KEY
+                name: jwt-secret
+          - name: MONGO_URI # value to access inside app
+            value: 'mongodb://orders-mongo-srv:27017/orders'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders-srv
+spec:
+  selector:
+    app: orders
+  ports:
+  - port: 3000
+    targetPort: 3000
+    name: orders
+    protocol: TCP

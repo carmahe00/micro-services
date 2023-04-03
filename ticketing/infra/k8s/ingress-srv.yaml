@@ -10,6 +10,13 @@ spec:
     - host: ticketing.dev # type "thisisunsafe"
       http:
         paths:
+          - path: /api/payments/?(.*) # ?(.*) means any request
+            pathType: Prefix
+            backend:
+              service:
+                name: payments-srv
+                port:
+                  number: 3000
           - path: /api/users/?(.*) # ?(.*) means any request
             pathType: Prefix
             backend:
@@ -22,6 +29,13 @@ spec:
             backend:
               service:
                 name: tickets-srv
+                port:
+                  number: 3000
+          - path: /api/orders/?(.*) # ?(.*) means any request
+            pathType: Prefix
+            backend:
+              service:
+                name: orders-srv
                 port:
                   number: 3000
           - path: /?(.*) # ?(.*) means any request

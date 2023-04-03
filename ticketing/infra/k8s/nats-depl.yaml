@@ -30,7 +30,7 @@ spec:
               '2',
               '-SD',
               '-cid',
-              'ticketing',
+              'ticketing', # cluster-id
             ]
 ---
 apiVersion: v1

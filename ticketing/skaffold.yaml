@@ -37,3 +37,30 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
+    - image: carmahe00/orders
+      context: orders
+      docker:
+        noCache: true
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: carmahe00/expiration
+      context: expiration
+      docker:
+        noCache: true
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: carmahe00/payments
+      context: payments
+      docker:
+        noCache: true
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
